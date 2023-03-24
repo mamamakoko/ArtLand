@@ -3,9 +3,12 @@ import { StyleSheet, View, SafeAreaView, Text, TextInput, TouchableOpacity, Imag
 import { Font } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 
-import {SignupScreen} from './OpeningScreen';
+import { SignupScreen } from './OpeningScreen';
 
-export default function SignInScreen() {
+// firebase
+import 'expo-dev-client';
+
+export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -30,7 +33,7 @@ export default function SignInScreen() {
           <TextInput
             style={styles.inputText}
             placeholder="Password"
-            placeholderTextColor="#f8f9fa"
+            placeholderTextColor="#f8f9fa90"
             secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
             value={password}
@@ -46,9 +49,9 @@ export default function SignInScreen() {
         {/* other way of login */}
 
         <View style={styles.contContainer}>
-          <View>
-            <SignupScreen text="Click me!" onPress={handlePress} />
-          </View>
+          <Text style={styles.registerText} onPress={() => navigation.navigate('SignupScreen')}>
+            Don't have an account? Register
+          </Text>
 
           <View style={styles.contTextContainer}>
             <Text style={styles.contText}>or continue with</Text>
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
   inputText: {
     height: 50,
     color: '#f8f9fa',
-    opacity: 0.6,
+    opacity: 1,
     width: '100%',
     fontSize: 16,
     fontWeight: 'bold',
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     borderWidth: 0,
     borderBottomWidth: 2,
-    borderBottomColor: '#f8f9fa',
+    borderBottomColor: '#f8f9fa90',
   },
   loginBtn: {
     width: '60%',
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 40,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   loginText: {
     color: '#f8f9fa',
@@ -126,5 +129,13 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 1,
     borderBottomColor: '#f8f9fa90',
+  },
+
+  // Register text
+  registerText: {
+    color: '#f8f9fa',
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginBottom: 40,
   },
 });

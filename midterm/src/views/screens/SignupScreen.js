@@ -3,7 +3,7 @@ import { View, TextInput, Button, StyleSheet, SafeAreaView, Text, TouchableOpaci
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SignupScreen = ({ text, onPress }) => {
+const SignupScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

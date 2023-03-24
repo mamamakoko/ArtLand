@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "470967437584",
+    "project_id": "artland-95b78",
+    "storage_bucket": "artland-95b78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470967437584:android:4d9192ec7a886c9de9fd95",
+        "android_client_info": {
+          "package_name": "com.kokoylomeda.midterm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470967437584-aren5li7suvchdh6akqh68588letcjct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kokoylomeda.midterm",
+            "certificate_hash": "37acab77d2075f7802bf59c3d0cf341c7e458d11"
+          }
+        },
+        {
+          "client_id": "470967437584-i1hrfdf1i4aqrce8a5npq0ketaiv0fbk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kokoylomeda.midterm",
+            "certificate_hash": "fb1b689b3b91092c09d61d9de94e77efbd124f9a"
+          }
+        },
+        {
+          "client_id": "470967437584-ualsqii53b4628ql7rtacib9moqpg5f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBylNAe6gI4ZV5qVlXZ08lWZW25RhMSF50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470967437584-ualsqii53b4628ql7rtacib9moqpg5f0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
