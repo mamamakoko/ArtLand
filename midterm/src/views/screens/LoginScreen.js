@@ -1,20 +1,98 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, SafeAreaView, Text, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
-import { Font } from 'expo';
-import { StatusBar } from 'expo-status-bar';
-
-import { SignupScreen } from './OpeningScreen';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, SafeAreaView, Text, TextInput, TouchableOpacity, ImageBackground, Button } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // firebase
 import 'expo-dev-client';
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+// default function
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
-  const handleSignIn = () => {
-    // TODO: handle sign-in logic
+  const [userData, setUserData] = useState({ email: '', password: '' });
+
+  const getUserData = async () => {
+    try {
+      let value = await AsyncStorage.getItem('userData');
+      if (value !== null) {
+        return JSON.parse(value);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return null;
   };
+
+
+  const handleSignIn = async () => {
+    const value = await getUserData();
+    if (value && email === value.email && password === value.password) {
+      // Navigate to another screen if login data is matched
+      navigation.navigate('HomeScreen');
+      AsyncStorage.setItem(
+        "value",
+        JSON.stringify({ ...value, loggedIn: true })
+      );
+    } else {
+      // Display error message if login data is not matched
+      console.log('Invalid email or password');
+    }
+  };
+
+
+  GoogleSignin.configure({
+    webClientId: '470967437584-ualsqii53b4628ql7rtacib9moqpg5f0.apps.googleusercontent.com',
+  });
+
+  // function for google button
+  const onGoogleButtonPress = async () => {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    // return auth().signInWithCredential(googleCredential);
+    const userGoogle = auth().signInWithCredential(googleCredential);
+    userGoogle
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = React.useState(true);
+  const [user, setUser] = React.useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+
+    if (initializing) setInitializing(false);
+  }
+
+  if (user) {
+    console.log("user >>");
+    console.log("user");
+    console.log("user <<");
+  } else {
+    console.log("No user specified");
+  }
+
+  React.useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   return (
     <ImageBackground source={require('../../img/background.png')} style={styles.background}>
@@ -24,7 +102,7 @@ export default function SignInScreen({ navigation }) {
           <TextInput
             style={styles.inputText}
             placeholder="Email"
-            placeholderTextColor="#f8f9fa"
+            placeholderTextColor="#f8f9fa90"
             onChangeText={(text) => setEmail(text)}
             value={email}
           />
@@ -56,6 +134,12 @@ export default function SignInScreen({ navigation }) {
           <View style={styles.contTextContainer}>
             <Text style={styles.contText}>or continue with</Text>
           </View>
+
+          <Button
+            style={styles.googleBtn}
+            title="Google"
+            onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}
+          />
         </View>
       </SafeAreaView>
     </ImageBackground>
@@ -138,4 +222,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 40,
   },
+
+  // Google button
+  // googleBtn: {
+  //   paddingTop: 50,
+  // }
 });
